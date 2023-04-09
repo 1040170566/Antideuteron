@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 
 plt.rcParams['font.sans-serif'] = ['Microsoft YaHei']
 
+
 # 计算两个矢量之间的距离
 def computeDistance(v1, v2):
     if len(v1) != len(v2):
@@ -12,6 +13,7 @@ def computeDistance(v1, v2):
     for x in range(l):
         diff.append(v1[x] - v2[x])
     return np.sqrt(sum(d ** 2 for d in diff))
+
 
 def nplog(min, max, bins):
     return np.logspace(np.log10(min), np.log10(max), bins)
@@ -24,7 +26,8 @@ class Particle(object):
         self.PDGID = int(list_of_par[2])
         self.four_momentum = list(map(float, list_of_par[3:7]))
         self.mass = float(list_of_par[7])
-        self.status_code = int(list_of_par[8])
+        # self.status_code = int(list_of_par[8])
+        self.incoming_ver_bar = int(list_of_par[9])
 
         self.vertex = list_of_par[-2]
         self.line_number = list_of_par[-1]
@@ -85,6 +88,9 @@ PDG_nbar = -2112
 pbar, nbar = [], []
 EventsNumber = 0
 
+PDG_Gamma = 22  # 光子PDGID
+gamma = []
+
 # 从数据中挑选出开头为P的数据，即粒子，同时判断是否为反质子或反中子
 # print(len(lines))
 for ii in range(len(lines)):
@@ -95,25 +101,20 @@ for ii in range(len(lines)):
         elif lines[ii][0] == 'V':
             vertex_current = Vertex(lines[ii] + [EventsNumber, ii + 1])
         elif lines[ii][0] == 'P':
-            particles.append(Particle(lines[ii] + [vertex_current, ii + 1]))
-            if particles[-1].PDGID == PDG_pbar:
-                pbar.append(particles[-1])
-            elif particles[-1].PDGID == PDG_nbar:
-                nbar.append(particles[-1])
+            par_current = Particle(lines[ii] + [vertex_current, ii + 1])
+            particles.append(par_current)
+            if par_current.PDGID == PDG_pbar:
+                pbar.append(par_current)
+            elif par_current.PDGID == PDG_nbar:
+                nbar.append(par_current)
+            elif par_current.PDGID == PDG_Gamma:
+                gamma.append(par_current)
 
 # 反质子与反中子混合在一起进行统计
 antinucleon = pbar + nbar
 
 P_pbar = [p.P_value() for p in pbar]  # 反质子动量大小列表
 P_nbar = [n.P_value() for n in nbar]  # 反中子动量大小列表
-
-# E_pbar = [p.four_momentum[-1] for p in pbar]  # 反质子能量列表
-# Emax_pbar, Emin_pbar = max(E_pbar), min(E_pbar)
-# print(Emax_pbar, Emin_pbar)
-
-# E_nbar = [n.four_momentum[-1] for n in nbar]  # 反中子能量列表
-# Emax_nbar, Emin_nbar = max(E_nbar), min(E_nbar)
-# print(Emax_nbar, Emin_nbar)
 
 # 反质子反中子质量
 mass_pbar, mass_nbar = pbar[0].mass, nbar[0].mass
@@ -123,3 +124,5 @@ bins_number = 1000  # 区间个数
 
 Pcoal = 0.219  # 聚结动量
 r_dbar = 1e-11  # 氘核尺度
+
+factor = 2  # 考虑正负电子交换应该有个因子2

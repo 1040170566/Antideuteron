@@ -9,6 +9,8 @@ for ii in range(len(bins_xT_antideu)):
     numbers_xT_antideuteron.append(numbers_T_antideuteron[ii]*bins_T_antideu[ii]*np.log(10))
 plt.plot(bins_xT_antideu, numbers_xT_antideuteron, 'g', label=r'$\bar{D}$')
 
+# plt.xlim(1e-5, 1)
+# plt.ylim(1e-7, 1e-4)
 plt.xscale('log')
 plt.yscale('log')
 plt.ylabel('dN/d$\\log{x}$ (/annihilation)')

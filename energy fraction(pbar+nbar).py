@@ -15,11 +15,11 @@ bins_xT_nu = nplog(xTmin_nu, xTmax_nu, bins_number + 1)
 numbers_xT_nu, bins_xT_nu = np.histogram(xT_nu, bins=bins_xT_nu)
 numbers_xT_nu = list(numbers_xT_nu)
 for ii in range(len(numbers_xT_nu)):
-    numbers_xT_nu[ii] /= (bins_xT_nu[ii + 1] - bins_xT_nu[ii]) / bins_xT_nu[ii] / np.log(10) * EventsNumber
+    numbers_xT_nu[ii] /= (bins_xT_nu[ii + 1] - bins_xT_nu[ii]) / bins_xT_nu[ii] / np.log(10) * EventsNumber /factor
 plt.plot(bins_xT_nu[:-1], numbers_xT_nu, label=r'$\bar{p}$')
 
-plt.xlim(1e-5, 1)
-plt.ylim(1e-2, 10)
+# plt.xlim(1e-5, 1)
+# plt.ylim(1e-2, 10)
 plt.xscale('log')
 plt.yscale('log')
 plt.ylabel('dN/d$\\log{x}$ (/annihilation)')
