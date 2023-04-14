@@ -28,6 +28,7 @@ for ii in range(len(numbers_xT_nbar)):
 # plt.scatter(bins_xT_nbar[:-1], numbers_xT_nbar, s=5, c='r', label=r'$\bar{n}$')
 plt.plot(bins_xT_nbar[:-1], numbers_xT_nbar, 'r', label=r'$\bar{n}$')
 
+# plt.ylim(0,1)
 plt.xscale('log')
 plt.yscale('log')
 plt.ylabel('dN/d$\\log{x}$ (/annihilation)')

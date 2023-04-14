@@ -26,7 +26,7 @@ class Particle(object):
         self.PDGID = int(list_of_par[2])
         self.four_momentum = list(map(float, list_of_par[3:7]))
         self.mass = float(list_of_par[7])
-        # self.status_code = int(list_of_par[8])
+        self.status_code = int(list_of_par[8])
         self.incoming_ver_bar = int(list_of_par[9])
 
         self.vertex = list_of_par[-2]
@@ -45,10 +45,21 @@ class Particle(object):
             raise TypeError('>运算对象是Particle')
         return self.four_momentum[-1] > other.four_momentum[-1]
 
+    # 计算三动量间隔
     def computePDistance(self, other):
         if not isinstance(other, Particle):
             raise TypeError('相空间运算对象是Particle')
         pdiff = computeDistance(self.four_momentum[:-1], other.four_momentum[:-1])
+        return pdiff
+
+    # 计算四动量间隔
+    def computepDistance(self, other):
+        if not isinstance(other, Particle):
+            raise TypeError('相空间运算对象是Particle')
+        p1, p2 = self.four_momentum.copy(), other.four_momentum.copy()
+        p1[-1] = p1[-1]*1j
+        p2[-1] = p2[-1]*1j
+        pdiff = computeDistance(p1, p2)
         return pdiff
 
     def P_value(self):
@@ -79,8 +90,11 @@ with open(r'D:\学习资料\毕业论文\模拟代码\tag_1_pythia8_events\tag_1
 with open(r'D:\学习资料\毕业论文\模拟代码\tag_1_pythia8_events.hepmc(2)\tag_1_pythia8_events.hepmc', 'r',
           encoding='utf-8') as f:
     lines2 = f.readlines()
+with open(r"D:\个人文件\下载\ee2WW-1e6.txt", 'r',
+          encoding='utf-8') as f:
+    lines3 = f.readlines()
 
-lines = lines2
+lines = lines3
 
 particles = []
 PDG_pbar = -2212
@@ -113,16 +127,17 @@ for ii in range(len(lines)):
 # 反质子与反中子混合在一起进行统计
 antinucleon = pbar + nbar
 
-P_pbar = [p.P_value() for p in pbar]  # 反质子动量大小列表
-P_nbar = [n.P_value() for n in nbar]  # 反中子动量大小列表
+# P_pbar = [p.P_value() for p in pbar]  # 反质子动量大小列表
+# P_nbar = [n.P_value() for n in nbar]  # 反中子动量大小列表
 
 # 反质子反中子质量
 mass_pbar, mass_nbar = pbar[0].mass, nbar[0].mass
-M_DM = particles[0].four_momentum[-1]
+# M_DM = particles[0].four_momentum[-1]
+M_DM = 100
 
 bins_number = 1000  # 区间个数
 
 Pcoal = 0.219  # 聚结动量
 r_dbar = 1e-11  # 氘核尺度
 
-factor = 2  # 考虑正负电子交换应该有个因子2
+factor = 1  # 考虑正负电子交换应该有个因子2

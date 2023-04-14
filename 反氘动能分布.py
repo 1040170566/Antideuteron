@@ -58,5 +58,5 @@ if __name__ == "__main__":
     for ii in range(len(numbers_T_antideuteron)-1):
         n_antideu += (bins_T_antideu[ii+1] - bins_T_antideu[ii]) * numbers_T_antideuteron[ii]
     with open(r'D:\学习资料\毕业论文\模拟代码\每次事件产生的反氘数.txt', 'a', encoding='utf-8') as f:
-        f.writelines([str(len(lines)), ' ', str(n_antideu * 100000), ' ', str(bins_number), ' \n'])
-    print(n_antideu*100000)
+        f.writelines([str(len(lines)), ' ', str(n_antideu * EventsNumber), ' ', str(bins_number), ' \n'])
+    print(n_antideu*EventsNumber)
