@@ -31,5 +31,5 @@ plt.axis('equal')
 plt.axis('off')
 
 plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\coalescence sketch.png')
-plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\coalescence sketch.eps', dpi= 300)
+plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\coalescence sketch.pdf')
 plt.show()

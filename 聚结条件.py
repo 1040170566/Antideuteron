@@ -47,7 +47,7 @@ for p in pbar:
         checknearcoal(loc_mid-1, 'before')
 
 N_antideu = len(antideuterons)
-print(N_antideu)
+print(N_antideu/EventsNumber)
 
 with open(r'D:\学习资料\毕业论文\模拟代码\反氘列表.txt', 'w', encoding='utf-8') as f:
     for anti in antideuterons:
