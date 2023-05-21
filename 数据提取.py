@@ -96,7 +96,7 @@ with open(r'D:\学习资料\毕业论文\模拟代码\tag_1_pythia8_events\tag_1
 with open(r'D:\学习资料\毕业论文\模拟代码\tag_1_pythia8_events.hepmc(2)\tag_1_pythia8_events.hepmc', 'r',
           encoding='utf-8') as f:
     lines2 = f.readlines()
-with open(r"D:\个人文件\下载\ee2WW1e6.txt", 'r',
+with open(r"D:\学习资料\毕业论文\pythia数据\ee2WW2e6.txt", 'r',
           encoding='utf-8') as f:
     lines3 = f.readlines()
 

@@ -49,15 +49,17 @@ P_Dbar = [computeDistance(dd, [0, 0, 0]) for dd in vecP_Dbar]
 T_Dbar = [np.sqrt(p * p + M_antideuteron ** 2) - M_antideuteron for p in P_Dbar]
 Tmax_D, Tmin_D = max(T_Dbar), min(T_Dbar)
 
-bins_T_D = np.linspace(Tmin_D, Tmax_D, 120 + 1)
+bins_T_D = np.linspace(Tmin_D, Tmax_D, 150 + 1)
 # bins_T_D = nplog(Tmin_D, Tmax_D, bins_number + 1)
 numbers_T_D, bins_T_D = np.histogram(T_Dbar, bins=bins_T_D)
 numbers_T_D = list(numbers_T_D)
 for x in range(len(numbers_T_D)):
     numbers_T_D[x] /= (bins_T_D[x + 1] - bins_T_D[x]) * EventsNumber
 
-plt.scatter(bins_T_D[:-1], numbers_T_D, label= '方法2', color='grey', s=10, marker='D')
-# plt.plot(bins_T_D[:-1], numbers_T_D, label= '方法2', color='grey', marker='D')
+bins_T_Deverynu = [EveryNu / 2 for EveryNu in bins_T_D]
+
+plt.scatter(bins_T_Deverynu[:-1], numbers_T_D, label= '方法2', color='grey', s=10, marker='D')
+# plt.plot(bins_T_Deverynu[:-1], numbers_T_D, label= '方法2', color='grey', marker='D')
 
 
 plt.xscale('log')
@@ -67,5 +69,5 @@ plt.xlabel('T (GeV/nucleon)')
 plt.legend(loc='center')
 plt.show()
 
-plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\compare.png')
+# plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\compare.png')
 plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\compare.pdf')

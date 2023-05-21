@@ -61,5 +61,5 @@ if __name__ == "__main__":
     print(n_antideu)
 
 plt.show()
-plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\dbar_dndt.png')
+# plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\dbar_dndt.png')
 plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\dbar_dndt.pdf')
