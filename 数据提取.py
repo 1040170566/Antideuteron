@@ -90,17 +90,9 @@ class Vertex(object):
         self.line_number = list_of_ver[-1]
 
 
-with open(r'D:\学习资料\毕业论文\模拟代码\tag_1_pythia8_events\tag_1_pythia8_events.hepmc', 'r',
+with open(r'/home/wangxiao/MG5_aMC_v3_5_0/Mydata/ee2wlv/Events/run_05/tag_73GeV_pythia8_events.hepmc', 'r',
           encoding='utf-8') as f:
-    lines1 = f.readlines()
-with open(r'D:\学习资料\毕业论文\模拟代码\tag_1_pythia8_events.hepmc(2)\tag_1_pythia8_events.hepmc', 'r',
-          encoding='utf-8') as f:
-    lines2 = f.readlines()
-with open(r"D:\学习资料\毕业论文\pythia数据\ee2WW2e6.txt", 'r',
-          encoding='utf-8') as f:
-    lines3 = f.readlines()
-
-lines = lines3
+    lines = f.readlines()
 
 particles = []
 PDG_pbar = -2212
@@ -108,8 +100,8 @@ PDG_nbar = -2112
 pbar, nbar = [], []
 EventsNumber = 0
 
-PDG_Gamma = 22  # 光子PDGID
-gamma = []
+# PDG_Gamma = 22  # 光子PDGID
+# gamma = []
 
 # 从数据中挑选出开头为P的数据，即粒子，同时判断是否为反质子或反中子
 # print(len(lines))
@@ -127,8 +119,9 @@ for ii in range(len(lines)):
                 pbar.append(par_current)
             elif par_current.PDGID == PDG_nbar:
                 nbar.append(par_current)
-            elif par_current.PDGID == PDG_Gamma:
-                gamma.append(par_current)
+            # 如果需要其他粒子，可以在这里添加
+            # elif par_current.PDGID == PDG_Gamma:
+            #     gamma.append(par_current)
 
 # 反质子与反中子混合在一起进行统计
 antinucleon = pbar + nbar
@@ -138,13 +131,13 @@ antinucleon = pbar + nbar
 
 # 反质子反中子质量
 mass_pbar, mass_nbar = pbar[0].mass, nbar[0].mass
-# M_DM = particles[0].four_momentum[-1]
-M_DM = 100
+M_DM = particles[0].four_momentum[-1]
+# M_DM = 50
 M_antideuteron = 1.875612928  # 反氘核质量
 
-bins_number = 10000  # 区间个数
+bins_number = 100  # 区间个数
 
 Pcoal = 0.195  # 聚结动量
 # r_dbar = 1e-11  # 氘核尺度
 
-factor = 1  # 考虑正负电子交换应该有个因子2
+# factor = 1  # 考虑正负电子交换应该有个因子2

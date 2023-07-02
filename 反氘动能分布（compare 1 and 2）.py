@@ -1,6 +1,10 @@
-from 数据提取 import *
+import matplotlib.pyplot as plt
+import numpy as np
 
-# plt.figure('反氘的动能分布dN/dT-T')
+from 数据提取 import *
+from 聚结条件 import antideuterons
+
+plt.figure()
 
 T_nu = [nu.four_momentum[-1] - nu.mass for nu in antinucleon]
 Tmax_nu, Tmin_nu = max(T_nu), min(T_nu)
@@ -34,34 +38,36 @@ for x in range(bins_number):
     bins_P_antideu.append(2 * p_nu)  # 反氘动量bins
     numbers_T_antideuteron.append(B_AP_A * numbers_T_pbar[x] * numbers_T_nbar[x] / bins_P_antideu[x])  # dN/dT
 
-    bins_T_antideu.append(np.sqrt(bins_P_antideu[-1]**2+M_antideuteron**2)-M_antideuteron)  # 反氘动能bins
+    bins_T_antideu.append(np.sqrt(bins_P_antideu[-1] ** 2 + M_antideuteron ** 2) - M_antideuteron)  # 反氘动能bins
 
-'''
-plt.plot(bins_T_nu[:-1], numbers_T_antideuteron, 'g', label=r'$\bar{D}$')
+plt.plot(bins_T_nu[:-1], numbers_T_antideuteron, 'g', label='方法1')
+
+
+
+vecP_Dbar = [d[1] + d[0] for d in antideuterons]
+P_Dbar = [computeDistance(dd, [0, 0, 0]) for dd in vecP_Dbar]
+T_Dbar = [np.sqrt(p * p + M_antideuteron ** 2) - M_antideuteron for p in P_Dbar]
+Tmax_D, Tmin_D = max(T_Dbar), min(T_Dbar)
+
+bins_T_D = np.linspace(Tmin_D, Tmax_D, 150 + 1)
+# bins_T_D = nplog(Tmin_D, Tmax_D, bins_number + 1)
+numbers_T_D, bins_T_D = np.histogram(T_Dbar, bins=bins_T_D)
+numbers_T_D = list(numbers_T_D)
+for x in range(len(numbers_T_D)):
+    numbers_T_D[x] /= (bins_T_D[x + 1] - bins_T_D[x]) * EventsNumber
+
+bins_T_Deverynu = [EveryNu / 2 for EveryNu in bins_T_D]
+
+plt.scatter(bins_T_Deverynu[:-1], numbers_T_D, label= '方法2', color='grey', s=10, marker='D')
+# plt.plot(bins_T_Deverynu[:-1], numbers_T_D, label= '方法2', color='grey', marker='D')
+
 
 plt.xscale('log')
 plt.yscale('log')
 plt.ylabel('dN/dT (/GeV/annihilation)')
 plt.xlabel('T (GeV/nucleon)')
-# plt.legend()
-plt.title('反氘动能分布')
-# if lines == lines1:
-#     plt.savefig(r'D:\学习资料\毕业论文\模拟代码\tag_1_pythia8_events\反氘动能分布.png')
-# elif lines == lines2:
-#     plt.savefig(r'D:\学习资料\毕业论文\模拟代码\tag_1_pythia8_events.hepmc(2)\反氘动能分布.png')
-# plt.show()
-
-
-if __name__ == "__main__":
-    # 每一次事件产生反氘的个数
-    n_antideu = 0
-    for ii in range(len(numbers_T_antideuteron)-1):
-        n_antideu += (bins_T_antideu[ii+1] - bins_T_antideu[ii]) * numbers_T_antideuteron[ii]
-    with open(r'D:\学习资料\毕业论文\模拟代码\每次事件产生的反氘数.txt', 'a', encoding='utf-8') as f:
-        f.writelines([str(len(lines)), ' ', str(n_antideu), ' ', str(bins_number), ' \n'])
-    print(n_antideu)
-
+plt.legend(loc='center')
 plt.show()
-plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\dbar_dndt.png')
-plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\dbar_dndt.pdf')
-'''
+
+# plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\compare.png')
+plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\compare.pdf')

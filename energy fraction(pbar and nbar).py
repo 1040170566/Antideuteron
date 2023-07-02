@@ -35,8 +35,8 @@ plt.ylabel('dN/d$\\log{x}$ (/annihilation)')
 plt.xlabel('$x=K/M_{DM}$')
 plt.legend(loc = "upper left")
 plt.title('反质子反中子动能分数x分布（$M_{DM}=$%d GeV）'%(round(M_DM)))
-if lines == lines1:
-    plt.savefig(r'D:\学习资料\毕业论文\模拟代码\tag_1_pythia8_events\反质子反中子动能分数分布.png')
-elif lines == lines2:
-    plt.savefig(r'D:\学习资料\毕业论文\模拟代码\tag_1_pythia8_events.hepmc(2)\反质子反中子动能分数分布.png')
+# if lines == lines1:
+#     plt.savefig(r'D:\学习资料\毕业论文\模拟代码\tag_1_pythia8_events\反质子反中子动能分数分布.png')
+# elif lines == lines2:
+#     plt.savefig(r'D:\学习资料\毕业论文\模拟代码\tag_1_pythia8_events.hepmc(2)\反质子反中子动能分数分布.png')
 plt.show()
