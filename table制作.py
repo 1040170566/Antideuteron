@@ -54,6 +54,7 @@ ws.title = '方法一'
 wb.copy_worksheet(ws)  # sheet备份
 
 bins_lgx = np.arange(-8.9, 0.01, 0.05)
+bins_lgx[-1] = 0
 length_bins = len(bins_lgx)
 # 选择开始插入行的位置
 col_A = tuple(ws.iter_cols(min_row=2, max_col=1))[0]

@@ -1,19 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
+import os, gc
 
-plt.rcParams['font.sans-serif'] = ['Microsoft YaHei']
-
-
-# 计算两个矢量之间的距离
-def computeDistance(v1, v2):
-    if len(v1) != len(v2):
-        raise TypeError('两个矢量必须相同长度')
-    l = len(v1)
-    diff = []
-    for x in range(l):
-        diff.append(v1[x] - v2[x])
-    return np.sqrt(sum(d ** 2 for d in diff))
-
+# plt.rcParams['font.sans-serif'] = ['Microsoft YaHei']
 
 def nplog(min, max, bins):
     return np.logspace(np.log10(min), np.log10(max), bins)
@@ -90,9 +79,12 @@ class Vertex(object):
         self.line_number = list_of_ver[-1]
 
 
-with open(r'/home/wangxiao/MG5_aMC_v3_5_0/Mydata/ee2wlv/Events/run_05/tag_73GeV_pythia8_events.hepmc', 'r',
-          encoding='utf-8') as f:
-    lines = f.readlines()
+def findAllFile(base):
+    for root, ds, fs in os.walk(base):
+        for f in fs:
+            if f.endswith('.hepmc'):
+                fullname = os.path.join(root, f)
+                yield fullname
 
 particles = []
 PDG_pbar = -2212
@@ -103,25 +95,29 @@ EventsNumber = 0
 # PDG_Gamma = 22  # 光子PDGID
 # gamma = []
 
-# 从数据中挑选出开头为P的数据，即粒子，同时判断是否为反质子或反中子
-# print(len(lines))
-for ii in range(len(lines)):
-    lines[ii] = lines[ii].split()
-    if lines[ii]:
-        if lines[ii][0] == 'E':
-            EventsNumber += 1  # 属于第几次模拟事件
-        elif lines[ii][0] == 'V':
-            vertex_current = Vertex(lines[ii] + [EventsNumber, ii + 1])
-        elif lines[ii][0] == 'P':
-            par_current = Particle(lines[ii] + [vertex_current, ii + 1])
-            particles.append(par_current)
-            if par_current.PDGID == PDG_pbar:
-                pbar.append(par_current)
-            elif par_current.PDGID == PDG_nbar:
-                nbar.append(par_current)
-            # 如果需要其他粒子，可以在这里添加
-            # elif par_current.PDGID == PDG_Gamma:
-            #     gamma.append(par_current)
+for i in findAllFile(r'/home/wangxiao/MG5_aMC_v3_5_0/Mydata/ee2bb/Events'):
+    with open(i, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+
+    # 从数据中挑选出开头为P的数据，即粒子，同时判断是否为反质子或反中子
+    # print(len(lines))
+    for ii in range(len(lines)):
+        lines[ii] = lines[ii].split()
+        if lines[ii]:
+            if lines[ii][0] == 'E':
+                EventsNumber += 1  # 属于第几次模拟事件
+            elif lines[ii][0] == 'V':
+                vertex_current = Vertex(lines[ii] + [EventsNumber, ii + 1])
+            elif lines[ii][0] == 'P':
+                par_current = Particle(lines[ii] + [vertex_current, ii + 1])
+                particles.append(par_current)
+                if par_current.PDGID == PDG_pbar:
+                    pbar.append(par_current)
+                elif par_current.PDGID == PDG_nbar:
+                    nbar.append(par_current)
+                # 如果需要其他粒子，可以在这里添加
+                # elif par_current.PDGID == PDG_Gamma:
+                #     gamma.append(par_current)
 
 del lines # 使用完毕，删除lines，释放内存
 
@@ -137,9 +133,11 @@ M_DM = particles[0].four_momentum[-1]
 # M_DM = 50
 M_antideuteron = 1.875612928  # 反氘核质量
 
-bins_number = 100  # 区间个数
+bins_number = 300  # 区间个数
 
 Pcoal = 0.195  # 聚结动量
 # r_dbar = 1e-11  # 氘核尺度
 
 # factor = 1  # 考虑正负电子交换应该有个因子2
+
+gc.collect()
