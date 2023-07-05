@@ -86,7 +86,7 @@ def findAllFile(base):
                 fullname = os.path.join(root, f)
                 yield fullname
 
-particles = []
+#particles = []
 PDG_pbar = -2212
 PDG_nbar = -2112
 pbar, nbar = [], []
@@ -94,8 +94,8 @@ EventsNumber = 0
 
 # PDG_Gamma = 22  # 光子PDGID
 # gamma = []
-
-for i in findAllFile(r'/home/wangxiao/MG5_aMC_v3_5_0/Mydata/ee2bb/Events'):
+times = 0
+for i in findAllFile(r'/home/wangxiao/application/MG5_aMC_v3_5_0/Mydata/ee2bb/Events'):
     with open(i, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
@@ -110,7 +110,7 @@ for i in findAllFile(r'/home/wangxiao/MG5_aMC_v3_5_0/Mydata/ee2bb/Events'):
                 vertex_current = Vertex(lines[ii] + [EventsNumber, ii + 1])
             elif lines[ii][0] == 'P':
                 par_current = Particle(lines[ii] + [vertex_current, ii + 1])
-                particles.append(par_current)
+                # particles.append(par_current)
                 if par_current.PDGID == PDG_pbar:
                     pbar.append(par_current)
                 elif par_current.PDGID == PDG_nbar:
@@ -118,6 +118,9 @@ for i in findAllFile(r'/home/wangxiao/MG5_aMC_v3_5_0/Mydata/ee2bb/Events'):
                 # 如果需要其他粒子，可以在这里添加
                 # elif par_current.PDGID == PDG_Gamma:
                 #     gamma.append(par_current)
+    times = times + 1
+    if times == 1:
+        break # 先跑一部分试试
 
 del lines # 使用完毕，删除lines，释放内存
 
@@ -129,11 +132,11 @@ antinucleon = pbar + nbar
 
 # 反质子反中子质量
 mass_pbar, mass_nbar = pbar[0].mass, nbar[0].mass
-M_DM = particles[0].four_momentum[-1]
-# M_DM = 50
+# M_DM = particles[0].four_momentum[-1]
+M_DM = 70
 M_antideuteron = 1.875612928  # 反氘核质量
 
-bins_number = 300  # 区间个数
+bins_number = 1000  # 区间个数
 
 Pcoal = 0.195  # 聚结动量
 # r_dbar = 1e-11  # 氘核尺度

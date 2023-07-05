@@ -4,7 +4,7 @@ T_nu = [nu.four_momentum[-1] - nu.mass for nu in antinucleon]
 Tmax_nu, Tmin_nu = max(T_nu), min(T_nu)
 # print(Tmax_nu, Tmin_nu)
 
-# bins_T_nu = np.linspace(Tmin_nu, Tmax_nu, bins_number + 1)
+#bins_T_nu = np.linspace(Tmin_nu, Tmax_nu, bins_number + 1)
 bins_T_nu = nplog(Tmin_nu, Tmax_nu, bins_number + 1)
 
 T_pbar = [(p.four_momentum[-1] - p.mass) for p in pbar]
