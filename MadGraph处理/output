@@ -1,0 +1,21 @@
+请输入暗物质质量（单位GeV）：
+
+  _     ._   __/__   _ _  _  _ _/_   Recorded: 13:02:10  Samples:  174842
+ /_//_/// /_\ / //_// / //_'/ //     Duration: 350.715   CPU time: 340.619
+/   _/                      v4.6.1
+
+Program: /home/wangxiao/application/anaconda3/bin/pyinstrument madgraph数据提取.py
+
+350.711 <module>  madgraph数据提取.py:1
+├─ 232.526 [self]  madgraph数据提取.py
+├─ 64.478 Particle.__init__  madgraph数据提取.py:11
+│  ├─ 37.354 [self]  madgraph数据提取.py
+│  └─ 27.124 array  <built-in>
+├─ 24.981 str.split  <built-in>
+└─ 24.123 Vertex.__init__  madgraph数据提取.py:72
+   ├─ 13.114 array  <built-in>
+   └─ 11.009 [self]  madgraph数据提取.py
+
+To view this report with different options, run:
+    pyinstrument --load-prev 2023-12-25T13-02-10 [options]
+

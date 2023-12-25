@@ -1,10 +1,13 @@
 import os
-
 import numpy as np
 from matplotlib import pyplot as plt
 
+dir_file_path = '/home/wangxiao/document/data'
+file_in = 'AtProduction_antideuterons.dat'
+file_in_path = os.path.join(dir_file_path, file_in)
+
 data = []
-with open(r'/home/wangxiao/文档/AtProduction_antiprotons.dat', "r") as f:
+with open(file_in_path, "r") as f:
     for line in f.readlines():
         line = line.strip("\n")
         line = line.split()
@@ -19,7 +22,7 @@ name = data.pop(0)
 for n in range(len(name)):
     print(f'{n}.{name[n]}')
 column_select = int(input('你的选择：'))
-#column_select = 13
+#column_select = 13 # bb
 
 energy_set = [int(n[0]) for n in data[0::length_bins]]
 print('记录的能量为：')
@@ -41,15 +44,12 @@ plt.xscale('log')
 plt.yscale('log')
 plt.ylabel('dN/dT (/GeV/annihilation)')
 plt.xlabel('T (GeV)')
-# plt.show()
-plt.savefig(r'/home/wangxiao/文档/ee2bb_antip_pppc4.pdf')
-#
-# with open(r'/home/wangxiao/文档/dndt_t_bb.txt', 'w', encoding='utf-8') as f:
-#     for w in T:
-#         f.write(str(w)+'\t')
-#     f.write('\n')
-#     for w in dndt:
-#         f.write(str(w)+'\t')
+plt.show()
+fig_out = 'ee2bb_antip_pppc4.pdf'
+fig_out_path = os.path.join(dir_file_path, fig_out)
+plt.savefig(fig_out_path)
 
 DATA = np.array([T,dndt])
-np.savetxt(r'/home/wangxiao/文档/dndt_t_bb_antip_pppc4.dat', DATA)
+file_out = 'dndt_t_bb_antip_pppc4.dat'
+file_out_path = os.path.join(dir_file_path, file_out)
+np.savetxt(file_out_path, DATA)

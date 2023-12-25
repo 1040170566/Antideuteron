@@ -1,7 +1,12 @@
+##############################
+# 建议使用madgraph数据提取.py
+# 2023.08.27
+##############################
+
 import numpy as np
 from matplotlib import pyplot as plt
 
-plt.rcParams['font.sans-serif'] = ['Microsoft YaHei']
+# plt.rcParams['font.sans-serif'] = ['Microsoft YaHei']
 
 
 # 计算两个矢量之间的距离
@@ -90,7 +95,7 @@ class Vertex(object):
         self.line_number = list_of_ver[-1]
 
 
-with open(r'/home/wangxiao/MG5_aMC_v3_5_0/Mydata/ee2wlv/Events/run_05/tag_73GeV_pythia8_events.hepmc', 'r',
+with open(r'/home/wangxiao/MG5_aMC_v3_5_3/All_of_my_data/ee2bb/Events/run_02/100GeV_pythia8_events.hepmc', 'r',
           encoding='utf-8') as f:
     lines = f.readlines()
 
