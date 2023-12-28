@@ -1,4 +1,3 @@
-# from madgraph数据提取 import *
 import madgraph数据提取 as mg
 import openpyxl as op
 import numpy as np
@@ -35,13 +34,13 @@ bins_T_antideu = []  # 反氘动能区间
 
 # TODO: 优化计算速度。暂时修改到这里，下次再改。
 
-for x in range(len(bins_T_nu)):
+for x in range(len(bins_T_nu)-1):
     p_nu = np.sqrt((bins_T_nu[x] + mg.mass_pbar) ** 2 - mg.mass_pbar ** 2)  # 每核子动量
     bins_P_antideu.append(2 * p_nu)  # 反氘动量bins
     bins_T_antideu.append(np.sqrt(bins_P_antideu[x] ** 2 + mg.M_antideuteron ** 2) - mg.M_antideuteron)  # 反氘动能bins
-    if x != len(bins_T_nu) - 1:
-        numbers_T_antideuteron.append(
-            B_AP_A * numbers_T_pbar[x] * numbers_T_nbar[x] / bins_P_antideu[x])  # dN/dT，T取区间左点
+    # if x != len(bins_T_nu) - 1:
+    numbers_T_antideuteron.append(
+        B_AP_A * numbers_T_pbar[x] * numbers_T_nbar[x] / bins_P_antideu[x])  # dN/dT，T取区间左点
 
 # bins_xT_antideu = [t / M_DM for t in bins_T_antideu]  # bins化为x刻度，x=T/M
 bins_lgx_antideu = [np.log10(t / mg.M_DM) for t in bins_T_antideu]  # bins化为lg(x)刻度，x=T/M

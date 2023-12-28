@@ -1,10 +1,12 @@
 import numpy as np
 import os, gc
+import gzip
 # from matplotlib import pyplot as plt
-# import gzip
-
 # plt.rcParams['font.sans-serif'] = ['Microsoft YaHei']
 
+# 代码运行效率可视化
+# import heartrate
+# heartrate.trace(browser=True)
 
 # 一个粒子类，用于创建数据中的粒子对象
 class Particle(object):
@@ -66,7 +68,6 @@ class Particle(object):
         # return (vertex1.event == vertex2.event) and (computeDistance(vertex1.four_x[:-1], vertex2.four_x[:-1]) < r_dbar)
         return (vertex1.event == vertex2.event) and (vertex1.four_x[:-1] == vertex2.four_x[:-1])
 
-
 # 顶角类
 class Vertex(object):
     def __init__(self, list_of_ver):
@@ -78,24 +79,14 @@ class Vertex(object):
         self.event = list_of_ver[-2]
         self.line_number = list_of_ver[-1]
 
-# 计算两个矢量之间的距离
-""" def computeDistance(v1, v2):
-    if len(v1) != len(v2):
-        raise TypeError('两个矢量必须相同长度')
-    l = len(v1)
-    diff = []
-    for x in range(l):
-        diff.append(v1[x] - v2[x])
-    return np.sqrt(sum(d ** 2 for d in diff)) """
-
 def nplog(min, max, bins):
     return np.logspace(np.log10(min), np.log10(max), bins)
 
-# 搜寻文件夹下所有hepmc.gz文件
+# 搜寻文件夹下所有hepmc文件
 def findAllFile(base):
     for root, ds, fs in os.walk(base):
         for f in fs:
-            if f.endswith('.hepmc'):     # 设置要读取的文件格式.hepmc/.hepmc.gz
+            if f.endswith('.hepmc') or f.endswith('.hepmc.gz'):     
                 fullname = os.path.join(root, f)
                 yield fullname
 
@@ -106,15 +97,20 @@ pbar, nbar = [], []
 EventsNumber = 0
 
 # M_DM = particles[0].four_momentum[-1]
-M_DM = int(input('请输入暗物质质量（单位GeV）：\n'))
+# M_DM = int(input('请输入暗物质质量（单位GeV）：\n'))
+M_DM = 100
 
 # PDG_Gamma = 22  # 光子PDGID
 # gamma = []
 times = 0
-for i in findAllFile(r'/home/wangxiao/MG5_aMC_v3_5_3/All_of_my_data/ee2bb/Events'):
+for i in findAllFile(r'/home/wangxiao/MG5_aMC_v3_5_3/All_of_my_data/ee2bb/Events/run_01_0'):
     if str(M_DM)+'GeV' in i:
-        with open(i, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
+        if i.endswith('.hepmc.gz'):
+            with gzip.open(i, 'rt') as f:
+                lines = f.readlines()
+        else:
+            with open(i, 'r', encoding='utf-8') as f:
+                lines = f.readlines()
 
         # 从数据中挑选出开头为P的数据，即粒子，同时判断是否为反质子或反中子
         # print(len(lines))
