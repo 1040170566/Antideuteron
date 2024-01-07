@@ -1,55 +1,47 @@
-import os
-import numpy as np
+# 提取pppc4的数据
+import pandas as pd
 from matplotlib import pyplot as plt
 
-dir_file_path = '/home/wangxiao/document/data'
-file_in = 'AtProduction_antideuterons.dat'
-file_in_path = os.path.join(dir_file_path, file_in)
 
-data = []
-with open(file_in_path, "r") as f:
-    for line in f.readlines():
-        line = line.strip("\n")
-        line = line.split()
-        data.append(line)
+def read_pppc4(DATA):
+    print('首行数据为：')
+    name = DATA.columns.tolist()
+    for n in range(len(name)):
+        print(f'{n}.{name[n]}')
+    column_select = int(input('你的选择：'))
+    # column_select = 13 # bb
 
-bins_lgx = np.arange(-8.9, 0.01, 0.05)
-bins_lgx[-1] = 0
-length_bins = len(bins_lgx)
+    energy_set = DATA.mDM.unique()
+    print('记录的能量为：')
+    for n in range(len(energy_set)):
+        print(f'{n}.{energy_set[n]}')
+    energy_number = int(input('需要观察的能量：'))
+    # energy_number = 11
+    energy = energy_set[energy_number]
 
-print('首行数据为：')
-name = data.pop(0)
-for n in range(len(name)):
-    print(f'{n}.{name[n]}')
-column_select = int(input('你的选择：'))
-#column_select = 13 # bb
+    dNdlgx = DATA[DATA.mDM == energy][name[column_select]]
+    bins_lgx = DATA[DATA.mDM == energy]['Log[10,x]']
+    bins_x = 10 ** bins_lgx
 
-energy_set = [int(n[0]) for n in data[0::length_bins]]
-print('记录的能量为：')
-for n in range(len(energy_set)):
-    print(f'{n}.{energy_set[n]}')
-energy_number = int(input('需要观察的能量：'))
-#energy_number = 11
-energy = energy_set[energy_number]
-row_start = length_bins * energy_number
-
-T = [pow(10, n) * energy for n in bins_lgx]
-dndt = [float(data[n][column_select]) / np.log(10) / T[n % length_bins] for n in
-        range(row_start, row_start + length_bins)]
+    return bins_x, dNdlgx
 
 
-plt.figure()
-plt.plot(T, dndt)
-plt.xscale('log')
-plt.yscale('log')
-plt.ylabel('dN/dT (/GeV/annihilation)')
-plt.xlabel('T (GeV)')
-plt.show()
-fig_out = 'ee2bb_antip_pppc4.pdf'
-fig_out_path = os.path.join(dir_file_path, fig_out)
-plt.savefig(fig_out_path)
+if __name__ == '__main__':
+    file_in_path = r'.\测试数据\PPPC4\AtProduction_antideuterons.dat'
+    Data = pd.read_csv(file_in_path, sep='\\s+', header=0)
+    bins_x, dNdlgx = read_pppc4(Data)
 
-DATA = np.array([T,dndt])
-file_out = 'dndt_t_bb_antip_pppc4.dat'
-file_out_path = os.path.join(dir_file_path, file_out)
-np.savetxt(file_out_path, DATA)
+    plt.figure()
+    plt.plot(bins_x, dNdlgx)
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.ylabel('dN/dlgx')
+    plt.xlabel('x')
+    # plt.show()
+
+    plt.savefig(r'处理结果\图\dNdlgx_x_antideu_bb_pppc4.pdf')
+
+    # 将数据保存为.dat文件，不保存列名与index
+    DATA = pd.DataFrame({'x': bins_x, 'dNdlgx': dNdlgx})
+    DATA.to_csv(r'处理结果\数据\dNdlgx_x_antideu_bb_pppc4.dat', sep='\t', index=False, header=False)
+
