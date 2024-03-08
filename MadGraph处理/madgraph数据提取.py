@@ -3,16 +3,28 @@ Description: 提取hepmc文件中的数据，并初步处理出反质子与反�
 Author: WangXiao
 Param:
     1, M_DM: 暗物质质量
-    2, InitDataFileDir_path: hepmc文件所在文件夹路径
+    2, InitDataFileDir: hepmc文件所在文件夹路径
     3, ChannelType: Channel类型，如bb，WW等
 """
 import gc
 import gzip
 import os
-import sys
+import argparse
 
 import numpy as np
 
+# 读取外部参数
+parser = argparse.ArgumentParser(description='读取所需参数，暗物质能量、路径、通道等')
+parser.add_argument('mass', type=int, help='暗物质质量')
+parser.add_argument('channel', type=str, help='湮灭通道')
+parser.add_argument('--inpath', '-i', type=str, default='测试数据', help='hepmc文件所在文件夹路径')
+parser.add_argument('--outdir', '-d', type=str, default='处理结果', help='数据存储文件夹')
+
+args = parser.parse_args()
+M_DM = args.mass  # 暗物质质量
+ChannelType = args.channel  # Channel类型，如bb，WW等
+InitDataFileDir = args.inpath  # hepmc文件所在文件夹路径
+ResultOutputDir = args.outdir  # 数据文件存储位置
 
 # 代码运行效率可视化
 # import heartrate
@@ -108,17 +120,21 @@ PDG_pbar = -2212
 PDG_nbar = -2112
 # PDG_Gamma = 22  # 光子PDGID
 pbar, nbar = [], []
+
+M_antideuteron = 1.875612928  # 反氘核质量
+Pcoal = 0.195  # 聚结动量
+# r_dbar = 1e-11  # 氘核尺度半径
+
 EventsNumber = 0
+bins_number = 200  # 区间个数
+
 
 # M_DM = int(input('请输入暗物质质量（单位GeV）：\n'))
 # M_DM = 100
-M_DM = int(sys.argv[1])  # 暗物质质量
-InitDataFileDir_path = sys.argv[2]  # hepmc文件所在文件夹路径
-ChannelType = sys.argv[3]  # Channel类型，如bb，WW等
 
 # 读取数据
 times = 0
-for i in findAllFile(InitDataFileDir_path):
+for i in findAllFile(InitDataFileDir):
     if str(M_DM) + 'GeV' in i:
         if i.endswith('.hepmc.gz'):
             with gzip.open(i, 'rt') as f:
@@ -139,13 +155,13 @@ for i in findAllFile(InitDataFileDir_path):
                     # particles.append(par_current)
                     if par_current.PDGID == PDG_pbar:
                         pbar.append(par_current)
-                    elif par_current.PDGID == PDG_nbar:
+                    if par_current.PDGID == PDG_nbar:
                         nbar.append(par_current)
                     # 如果需要其他粒子，可以在这里添加
-                    # elif par_current.PDGID == PDG_Gamma:
+                    # if par_current.PDGID == PDG_Gamma:
                     #     gamma.append(par_current)
         times += 1
-    if times == 5:
+    if times == 3:
         break  # 先跑一部分试试
 
 try:
@@ -159,11 +175,4 @@ antinucleon = pbar + nbar
 
 # 反质子反中子质量
 mass_pbar, mass_nbar = pbar[0].mass, nbar[0].mass
-M_antideuteron = 1.875612928  # 反氘核质量
-
-bins_number = 1000  # 区间个数
-
-Pcoal = 0.195  # 聚结动量
-# r_dbar = 1e-11  # 氘核尺度半径
-
 gc.collect()

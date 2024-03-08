@@ -1,7 +1,10 @@
-# 相比'madgraph数据处理.py'，此版先给定bins
+"""
+相比'madgraph数据处理.py'，此版先给定bins
+"""
+
 import madgraph数据提取 as mg
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 bins_lgx = np.arange(-8.9, 0.01, 0.05)  # pppc4的bins
 bins_lgx[-1] = 0
@@ -30,20 +33,20 @@ nor_dndT_antideuteron = np.append(nor_dndT_antideuteron, 0)
 dNdlgx_antideuteron = nor_dndT_antideuteron * bins_T_antideu * np.log(10)  # dN/dlgx
 
 if __name__ == '__main__':
-    plt.plot(bins_x, dNdlgx_antideuteron, 'g', label=r'$\bar{D}$')
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.xlim([1e-5, 1])
-    plt.ylim([1e-7, 1e-3])
-    plt.ylabel('dN/dlgx (/GeV/annihilation)')
-    plt.xlabel('x')
+    # plt.plot(bins_x, dNdlgx_antideuteron, 'g', label=r'$\bar{D}$')
+    # plt.xscale('log')
+    # plt.yscale('log')
+    # plt.xlim([1e-5, 1])
+    # plt.ylim([1e-7, 1e-3])
+    # plt.ylabel('dN/dlgx (/GeV/annihilation)')
+    # plt.xlabel('x')
     # plt.legend()
     # plt.title('反氘动能分布')
-    plt.savefig(fr'处理结果\图\dNdlgx_x_antideu_{mg.ChannelType}_{mg.M_DM}GeV_MG.pdf')
+    # plt.savefig(fr'{mg.ResultOutputDir}/图/dNdlgx_x_antideu_{mg.ChannelType}_{mg.M_DM}GeV_MG.pdf')
     # plt.show()
 
     # 数据保存为.dat，方便后续处理读取，不用重新计算
     DATA = np.array([bins_x, dNdlgx_antideuteron])
-    with open(fr'处理结果\数据\dNdlgx_x_antideu_{mg.ChannelType}_{mg.M_DM}GeV_MG.dat', 'w') as f:
+    with open(f'{mg.ResultOutputDir}/dNdlgx_x_antideu_{mg.ChannelType}_{mg.M_DM}GeV_MG_{mg.EventsNumber:.1E}', 'w') as f:
         f.write('x=T/M_DM' + '\t\t\t\t ' 'dN/dlgx\n')
         np.savetxt(f, DATA.T)
