@@ -9,10 +9,10 @@ Param:
 import gc
 import gzip
 import os
-import argparse
 
 import numpy as np
 
+import argparse
 # 读取外部参数
 parser = argparse.ArgumentParser(description='读取所需参数，暗物质能量、路径、通道等')
 parser.add_argument('mass', type=int, help='暗物质质量')
