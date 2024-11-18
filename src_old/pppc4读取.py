@@ -27,7 +27,7 @@ def read_pppc4(DATA):
 
 
 if __name__ == '__main__':
-    file_in_path = r'.\测试数据\PPPC4\AtProduction_antideuterons.dat'
+    file_in_path = r'./测试数据/PPPC4/AtProduction_antideuterons.dat'
     Data = pd.read_csv(file_in_path, sep='\\s+', header=0)
     bins_x, dNdlgx = read_pppc4(Data)
 
@@ -39,9 +39,9 @@ if __name__ == '__main__':
     plt.xlabel('x')
     # plt.show()
 
-    plt.savefig(r'处理结果\图\dNdlgx_x_antideu_bb_pppc4.pdf')
+    plt.savefig(r'Results/Figures/dNdlgx_x_antideu_bb_pppc4.pdf')
 
     # 将数据保存为.dat文件，不保存列名与index
     DATA = pd.DataFrame({'x': bins_x, 'dNdlgx': dNdlgx})
-    DATA.to_csv(r'处理结果\数据\dNdlgx_x_antideu_bb_pppc4.dat', sep='\t', index=False, header=False)
+    DATA.to_csv(r'Results/Data/dNdlgx_x_antideu_bb_pppc4.dat', sep='\t', index=False, header=False)
 

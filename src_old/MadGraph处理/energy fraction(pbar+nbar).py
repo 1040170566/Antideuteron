@@ -43,7 +43,7 @@ if __name__ == '__main__':
     name = f'dNdlgx_lgx_pbar_{mg.ChannelType}_{mg.M_DM}GeV_MG_{mg.EventsNumber:.1E}'
 
     # 图像存储
-    plt.savefig(f'{mg.ResultOutputDir}/图/{name}.pdf')
+    plt.savefig(f'{mg.ResultOutputDir}/Figures/{name}.pdf')
 
     # 数据存储
     Data = np.array([[mg.M_DM]*len(bins_lgx), bins_lgx, nor_dndlgx_nu]).T
@@ -51,4 +51,4 @@ if __name__ == '__main__':
     Data2save['mDM'] = Data2save['mDM'].astype(np.int64)
     # Data2save = Data2save[Data2save['T'] >=0.1]
     # print(Data2save)
-    Data2save.to_csv(f'{mg.ResultOutputDir}/数据/{name}.dat', index=False, sep='\t')
+    Data2save.to_csv(f'{mg.ResultOutputDir}/Data/{name}.dat', index=False, sep='\t')
