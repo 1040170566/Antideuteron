@@ -30,6 +30,6 @@ plt.annotate('$\\bar{n}$', xy=p_nbar, xytext= [2,-1.5], arrowprops=dict(arrowsty
 plt.axis('equal')
 plt.axis('off')
 
-plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\coalescence sketch.png')
-plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\coalescence sketch.pdf')
+# plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\coalescence sketch.png')
+# plt.savefig(r'D:\学习资料\毕业论文\whu-graduation-thesis-latex\figures\coalescence sketch.pdf')
 plt.show()
